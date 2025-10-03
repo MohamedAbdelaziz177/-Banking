@@ -1,0 +1,33 @@
+services:
+  accounts-ms:
+    build: ../../services/accounts
+    container_name: accounts-cont
+    ports:
+      - "8080:8080"
+    extends:
+      file: common-qa.yml
+      service: ms-parent-service
+
+
+  cards-ms:
+    build: ../../services/cards
+    container_name: cards-cont
+    ports:
+      - "9000:9000"
+    extends:
+      file: common-qa.yml
+      service: ms-parent-service
+
+  loans-ms:
+    build: ../../services/loans
+    container_name: loans-cont
+    ports:
+      - "8090:8090"
+    extends:
+      file: common-qa.yml
+      service: ms-parent-service
+
+networks:
+  bank-ms-net:
+    driver: bridge
+

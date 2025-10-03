@@ -1,0 +1,53 @@
+services:
+  postgres-accounts:
+    environment:
+      POSTGRES_DB: accounts
+    ports:
+      - '5432:5432'
+    volumes:
+      - accounts-db-data:/var/lib/postgresql/data
+    extends:
+      file: common.yml
+      service: postgres-parent-service
+
+  postgres-cards:
+    environment:
+      POSTGRES_DB: cards
+    ports:
+      - '5433:5432'
+    volumes:
+      - cards-db-data:/var/lib/postgresql/data
+    extends:
+      file: common.yml
+      service: postgres-parent-service
+    networks:
+      - bank-ms-net
+
+  postgres-loans:
+    environment:
+      #POSTGRES_USER: admin
+      #POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: loans
+    ports:
+      - '5434:5432'
+    volumes:
+      - loans-db-data:/var/lib/postgresql/data
+    extends:
+      file: common.yml
+      service: postgres-parent-service
+    networks:
+      - bank-ms-net
+
+  pgadmin:
+    extends:
+      file: common.yml
+      service: pgAdmin
+
+volumes:
+  accounts-db-data:
+  cards-db-data:
+  loans-db-data:
+
+networks:
+  bank-ms-net:
+    driver: bridge

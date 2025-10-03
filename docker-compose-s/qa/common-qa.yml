@@ -1,0 +1,7 @@
+services:
+  ms-parent-service:
+    environment:
+      SPRING_PROFILES_ACTIVE: qa
+    networks:
+      - bank-ms-net
+    restart: always
