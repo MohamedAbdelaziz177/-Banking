@@ -16,6 +16,6 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.jar configserver.jar
 
-EXPOSE 9000
+EXPOSE 8888
 
 ENTRYPOINT ["java", "-jar", "configserver.jar"]
