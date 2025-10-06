@@ -19,22 +19,33 @@ public class GatewayserverApplication {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r ->
-                        r.path("/accounts/**")
+                        r.path("/api/accounts/**")
                                 .filters(f -> f
-                                        .addRequestHeader("time-stamp", LocalDateTime.now().toString())
-                                        .addResponseHeader("service", "ACC_SERVICE"))
-                                .uri("lb://ACCOUNTS"))
+                                        .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
+                                        .addResponseHeader("service", "ACC_SERVICE")
+                                        .rewritePath("/api/accounts/(?<segment>.*)", "/${segment}")
+                                        .circuitBreaker(cb -> cb
+                                                .setName("accounts-circuit-breaker")
+                                                .setFallbackUri("forward:/fallback/contactSupport"))
+                                )
+                                .uri("lb://ACCOUNTS")
+                )
+
+
                 .route(r ->
-                        r.path("/cards/**")
+                        r.path("/api/cards/**")
                                 .filters(f -> f
-                                        .addRequestHeader("time-stamp", LocalDateTime.now().toString())
-                                        .addResponseHeader("service", "CARD_SERVICE"))
+                                        .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
+                                        .addResponseHeader("service", "CARD_SERVICE")
+                                        .rewritePath("/api/cards/(?<segment>.*)", "/${segment}")
+                                )
                                 .uri("lb://CARDS"))
                 .route(r ->
-                        r.path("/loans/**")
+                        r.path("/api/loans/**")
                                 .filters(f -> f
-                                        .addRequestHeader("time-stamp", LocalDateTime.now().toString())
+                                        .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
                                         .addResponseHeader("service", "LOAN_SERVICE")
+                                        .rewritePath("/api/loans/(?<segment>.*)", "/${segment}")
                                 )
                                 .uri("lb://LOANS"))
                 .build();
