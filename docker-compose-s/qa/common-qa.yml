@@ -5,3 +5,11 @@ services:
     networks:
       - bank-ms-net
     restart: always
+
+  business-ms-parent:
+    extends:
+      service:
+        ms-parent-service
+    depends-on:
+      eureka-server-ms:
+        condition: service_healthy
