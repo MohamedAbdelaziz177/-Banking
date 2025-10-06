@@ -1,4 +1,37 @@
 services:
+
+  config-server-ms:
+    build: ../../services/configserver
+    container_name: configserver-cont
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+    extends:
+      file: common-qa.yml
+      service: ms-parent-service
+
+  eureka-server-ms:
+    build: ../../services/eurekaserver
+    container_name: eurekaserver-cont
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    extends:
+      file: common-qa.yml
+      service: ms-parent-service
+    depends_on:
+       config-server-ms:
+         condition: service_healthy
+
   accounts-ms:
     build: ../../services/accounts
     container_name: accounts-cont
@@ -6,7 +39,7 @@ services:
       - "8080:8080"
     extends:
       file: common-qa.yml
-      service: ms-parent-service
+      service: business-ms-parent
 
 
   cards-ms:
@@ -16,7 +49,7 @@ services:
       - "9000:9000"
     extends:
       file: common-qa.yml
-      service: ms-parent-service
+      service: business-ms-parent
 
   loans-ms:
     build: ../../services/loans
@@ -25,7 +58,17 @@ services:
       - "8090:8090"
     extends:
       file: common-qa.yml
-      service: ms-parent-service
+      service: business-ms-parent
+
+  gateway-server-ms:
+    build: ../../services/gatewayserver
+    container_name: gatewayserver-cont
+    ports:
+      - "8085:8085"
+    extends:
+      file: common-qa.yml
+      service: business-ms-parent
+
 
 networks:
   bank-ms-net:

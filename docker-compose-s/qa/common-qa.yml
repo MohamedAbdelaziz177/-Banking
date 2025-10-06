@@ -8,8 +8,7 @@ services:
 
   business-ms-parent:
     extends:
-      service:
-        ms-parent-service
-    depends-on:
+      service: ms-parent-service
+    depends_on:
       eureka-server-ms:
         condition: service_healthy
