@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient("cards")
+@FeignClient(value = "cards", url = "${microservices.cards.url}", fallback = CardsClientFallBack.class)
 public interface CardsClient {
     @GetMapping("/{mobileNumber}")
     ResponseEntity<CardDto> fetchCard(@PathVariable String mobileNumber);
