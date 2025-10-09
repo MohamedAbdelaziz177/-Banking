@@ -1,7 +1,13 @@
+spring:
+  #mvc:
+  #  favicon:
+  #    enabled: false
 
-server:
-  address: localhost
-  port: 9000
+  cloud:
+    eureka:
+      instance:
+        serviceUrl:
+          defaultZone: "http://localhost:8761/eureka/"
 
   jpa:
     hibernate:
@@ -9,6 +15,8 @@ server:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
+server:
+  port: 9000
 
 eureka:
   instance:
@@ -17,4 +25,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: "${EUREKA_URL:http://localhost:8761}/eureka/"
+      defaultZone: "http://localhost:8761/eureka/"
