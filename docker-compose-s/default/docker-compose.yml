@@ -2,7 +2,7 @@
 services:
   postgres-accounts:
     environment:
-      POSTGRES_DB: accounts
+      POSTGRES_DB: accounts-db
     ports:
       - '5432:5432'
     volumes:
@@ -13,7 +13,7 @@ services:
 
   postgres-cards:
     environment:
-      POSTGRES_DB: cards
+      POSTGRES_DB: cards-db
     ports:
       - '5433:5432'
     volumes:
@@ -28,7 +28,7 @@ services:
     environment:
       #POSTGRES_USER: admin
       #POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: loans
+      POSTGRES_DB: loans-db
     ports:
       - '5434:5432'
     volumes:

@@ -1,15 +1,10 @@
-
 server:
-  address: localhost
   port: 8761
 
 eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
-    service-url:
-      defaultZone: "${EUREKA_URL:http://localhost:8761}/eureka/"
-
 
 management:
   endpoints:
@@ -20,4 +15,3 @@ management:
   endpoint:
     health:
       show-details: always
-

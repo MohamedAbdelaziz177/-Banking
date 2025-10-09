@@ -14,6 +14,7 @@ import com.abdelaziz26.bank.accounts.repositories.CustomerRepository;
 import com.abdelaziz26.bank.accounts.services.clients.CardsClient;
 import com.abdelaziz26.bank.accounts.services.clients.LoansClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,8 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
+
+
     private final CardsClient cardsClient;
     private final LoansClient loansClient;
 
