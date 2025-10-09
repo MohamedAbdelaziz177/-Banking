@@ -6,9 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(value = "loans", url = "${microservices.loans.url}", fallback = CardsClientFallBack.class)
+@FeignClient(
+        value = "loans",
+        url = "${microservices.loans.url}",
+        fallback = LoansClientFallBack.class
+)
 public interface LoansClient {
 
-    @GetMapping("/{mobileNumber}")
+    @GetMapping("/api/loans/{mobileNumber}")
     ResponseEntity<LoanDto> fetchLoan(@PathVariable String mobileNumber);
 }

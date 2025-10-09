@@ -17,7 +17,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class LoanService {
 
-    private LoansRepository loansRepository;
+    private final LoansRepository loansRepository;
 
     public void createLoan(String mobileNumber) {
         Optional<Loan> optionalLoans= loansRepository.findByMobileNumber(mobileNumber);
