@@ -1,15 +1,15 @@
-spring:
-  profiles:
-    active: dev
 
+server:
+  address: localhost
+  port: 8090
+
+spring:
   jpa:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
-server:
-  port: 9000
 
 eureka:
   instance:

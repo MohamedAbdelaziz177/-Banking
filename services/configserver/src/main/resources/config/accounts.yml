@@ -1,9 +1,8 @@
 
+server:
+  address: localhost
+  port: 8080
 spring:
-
-  profiles:
-    active: dev
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,6 +20,8 @@ eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
+    service-url:
+      defaultZone: "${EUREKA_URL:http://localhost:8761}/eureka/"
 
 
 resilience4j:
@@ -33,3 +34,8 @@ resilience4j:
         wait-duration-in-open-state:
           seconds: 2
 
+microservices:
+  cards:
+    url: "http://localhost:8090"
+  loans:
+    url: "http://localhost:9000"

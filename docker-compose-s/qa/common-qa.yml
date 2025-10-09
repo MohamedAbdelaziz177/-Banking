@@ -2,6 +2,8 @@ services:
   ms-parent-service:
     environment:
       SPRING_PROFILES_ACTIVE: qa
+      CONFIG_SERVER_URL: http://config-server-ms:8888
+      EUREKA_URL: http://eureka-server-ms:8761
     networks:
       - bank-ms-net
     restart: always

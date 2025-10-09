@@ -2,8 +2,12 @@
 spring:
   application:
     name: accounts
+
+  #profiles:
+  #  active: dev
+
   config:
-    import: "optional:configserver:http://localhost:8888/"
+    import: "optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}/"
 
 
 
