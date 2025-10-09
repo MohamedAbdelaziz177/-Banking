@@ -4,6 +4,10 @@ server:
   port: 8090
 
 spring:
+  #mvc:
+  #  favicon:
+  #    enabled: false
+
   jpa:
     hibernate:
       ddl-auto: update

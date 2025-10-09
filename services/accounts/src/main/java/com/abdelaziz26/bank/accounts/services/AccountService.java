@@ -21,8 +21,8 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AccountService {
 
-    private AccountRepository accountsRepository;
-    private CustomerRepository customerRepository;
+    private final AccountRepository accountsRepository;
+    private final CustomerRepository customerRepository;
 
     public void createAccount(CustomerDto customerDto) {
         Customer customer = CustomerMapper.toEntity(customerDto);

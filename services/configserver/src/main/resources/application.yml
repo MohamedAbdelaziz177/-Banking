@@ -6,11 +6,10 @@ spring:
     config:
       server:
         native:
-          search-locations: "classpath:/, classpath:/config, file:./, file:./config"
+          search-locations: classpath:/config
 
 server:
   port: 8888
-  address: 0.0.0.0
 
 management:
   endpoints:
