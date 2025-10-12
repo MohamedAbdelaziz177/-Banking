@@ -5,5 +5,17 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8888/"
 
+  cloud:
+    stream:
+      bindings:
+        sendEmail-out-0:                   # unified naming conv
+          destination: send-notifications  # exchange name
+
+  rabbitmq:
+    username: guest
+    password: guest
+    host: localhost
+    port: 5672
+
 
 

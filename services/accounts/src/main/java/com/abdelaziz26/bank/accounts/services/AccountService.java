@@ -2,6 +2,7 @@ package com.abdelaziz26.bank.accounts.services;
 
 import com.abdelaziz26.bank.accounts.common.AccountsConstants;
 import com.abdelaziz26.bank.accounts.dto.AccountDto;
+import com.abdelaziz26.bank.accounts.dto.AccountMsgDto;
 import com.abdelaziz26.bank.accounts.dto.CustomerDto;
 import com.abdelaziz26.bank.accounts.entities.Account;
 import com.abdelaziz26.bank.accounts.entities.Customer;
@@ -12,6 +13,9 @@ import com.abdelaziz26.bank.accounts.mapper.CustomerMapper;
 import com.abdelaziz26.bank.accounts.repositories.AccountRepository;
 import com.abdelaziz26.bank.accounts.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,6 +27,8 @@ public class AccountService {
 
     private final AccountRepository accountsRepository;
     private final CustomerRepository customerRepository;
+    private final static Logger logger = LoggerFactory.getLogger(AccountService.class);
+    private final StreamBridge streamBridge;
 
     public void createAccount(CustomerDto customerDto) {
         Customer customer = CustomerMapper.toEntity(customerDto);
@@ -32,7 +38,8 @@ public class AccountService {
                     +customerDto.getPhone());
         }
         Customer savedCustomer = customerRepository.save(customer);
-        accountsRepository.save(createNewAccount(savedCustomer));
+        Account savedAcc = accountsRepository.save(createNewAccount(savedCustomer));
+        this.sendCommunication(savedAcc, savedCustomer);
     }
 
 
@@ -47,7 +54,18 @@ public class AccountService {
         return newAccount;
     }
 
+    private void sendCommunication(Account account, Customer customer) {
 
+        var accountsMsgDto = new AccountMsgDto(account.getAccountNumber(),
+                account.getAccountType(),
+                customer.getEmail(),
+                customer.getPhone()
+                );
+
+        logger.info("Sending Communication request for the details: {}", accountsMsgDto);
+        var result = streamBridge.send("sendNotification-out-0", accountsMsgDto);
+        logger.info("Is the Communication request successfully triggered ? : {}", result);
+    }
     public CustomerDto fetchAccount(String mobileNumber) {
         Customer customer = customerRepository.findByPhone(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
