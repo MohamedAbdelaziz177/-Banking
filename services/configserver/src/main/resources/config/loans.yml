@@ -1,7 +1,7 @@
 spring:
-  #mvc:
-  #  favicon:
-  #    enabled: false
+  mvc:
+    favicon:
+      enabled: false
 
   cloud:
     eureka:

@@ -12,6 +12,7 @@ import com.abdelaziz26.bank.accounts.mapper.AccountMapper;
 import com.abdelaziz26.bank.accounts.mapper.CustomerMapper;
 import com.abdelaziz26.bank.accounts.repositories.AccountRepository;
 import com.abdelaziz26.bank.accounts.repositories.CustomerRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class AccountService {
     private final static Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final StreamBridge streamBridge;
 
+    @Transactional
     public void createAccount(CustomerDto customerDto) {
         Customer customer = CustomerMapper.toEntity(customerDto);
         Optional<Customer> optionalCustomer = customerRepository.findByPhone(customerDto.getPhone());
@@ -37,15 +39,35 @@ public class AccountService {
             throw new CustomerAlreadyExistsException("Customer already registered with given mobileNumber "
                     +customerDto.getPhone());
         }
+
+
+        //logger.info("Customer saved with id: {}", savedCustomer.getCustomerId());
+       //Account acc = createNewAccount();
+
+       //customer.setAccount(acc);
+       //acc.setCustomer(customer);
+       //logger.info("Acc data : {}", acc);
+
+       //Customer savedCustomer = customerRepository.save(customer);
+
         Customer savedCustomer = customerRepository.save(customer);
-        Account savedAcc = accountsRepository.save(createNewAccount(savedCustomer));
-        this.sendCommunication(savedAcc, savedCustomer);
+
+        // Create and save Account
+        Account acc = createNewAccount();
+        acc.setCustomer(savedCustomer);
+
+        //Account savedAcc = accountsRepository.save(acc);
+
+        // Update Customer with Account reference
+
+        //customerRepository.save(savedCustomer); // This update is optional if you don't need the back-reference
+
+        this.sendCommunication(acc, savedCustomer);
     }
 
 
-    private Account createNewAccount(Customer customer) {
+    private Account createNewAccount() {
         Account newAccount = new Account();
-        newAccount.setCustomerId(customer.getCustomerId());
         long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
 
         newAccount.setAccountNumber(randomAccNumber);
@@ -63,14 +85,14 @@ public class AccountService {
                 );
 
         logger.info("Sending Communication request for the details: {}", accountsMsgDto);
-        var result = streamBridge.send("sendNotification-out-0", accountsMsgDto);
+        var result = streamBridge.send("sendEmail-out-0", accountsMsgDto);
         logger.info("Is the Communication request successfully triggered ? : {}", result);
     }
     public CustomerDto fetchAccount(String mobileNumber) {
         Customer customer = customerRepository.findByPhone(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        Account account = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+        Account account = accountsRepository.findByCustomer_CustomerId(customer.getCustomerId()).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
         );
         CustomerDto customerDto = CustomerMapper.toDto(customer);
@@ -87,13 +109,11 @@ public class AccountService {
                     () -> new ResourceNotFoundException("Account", "AccountNumber", accountsDto.getAccountNumber().toString())
             );
             Account updatedAccount = AccountMapper.toEntity(accountsDto);
-            updatedAccount.setCustomerId(account.getCustomerId());
+            updatedAccount.setCustomer(account.getCustomer());
             accountsRepository.save(updatedAccount);
 
-            Long customerId = account.getCustomerId();
-            Customer customer = customerRepository.findById(customerId).orElseThrow(
-                    () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
-            );
+            Customer customer = account.getCustomer();
+
             Customer updatedCustomer =  CustomerMapper.toEntity(customerDto);
             updatedCustomer.setCustomerId(customer.getCustomerId());
             customerRepository.save(customer);
@@ -108,7 +128,7 @@ public class AccountService {
         Customer customer = customerRepository.findByPhone(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        accountsRepository.deleteByCustomerId(customer.getCustomerId());
+        accountsRepository.deleteByCustomer_CustomerId(customer.getCustomerId());
         customerRepository.deleteById(customer.getCustomerId());
         return true;
     }

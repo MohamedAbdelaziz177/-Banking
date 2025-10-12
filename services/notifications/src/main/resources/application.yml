@@ -1,3 +1,8 @@
+
+server:
+  address: localhost
+  port: 9010
+
 spring:
   application:
     name: notifications
@@ -8,17 +13,15 @@ spring:
 
     stream:
       bindings:
-        email-sms-in-0:
+        emailsms-in-0:
           destination: send-notifications
           group: ${spring.application.name}
-      binders:
-        rabbit:
 
   rabbitmq:
     host: localhost
     port: 5672
-    username: guest
-    password: guest
+    username: admin
+    password: 1234
 
   mail:
     host: smtp.gmail.com

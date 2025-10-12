@@ -34,7 +34,7 @@ public class CustomerService {
         Customer customer = customerRepository.findByPhone(mobileNumber).orElseThrow(() ->
                 new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
 
-        Account account = accountRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(() ->
+        Account account = accountRepository.findByCustomer_CustomerId(customer.getCustomerId()).orElseThrow(() ->
                 new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString()));
 
         CustomerDetailsDto customerDetailsDto = CustomerMapper.toCustomerDetailsDto(customer);

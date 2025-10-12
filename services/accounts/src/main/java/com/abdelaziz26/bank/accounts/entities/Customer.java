@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity @Table(name = "customers")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class Customer extends BaseEntity{
+public class Customer {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,4 +23,7 @@ public class Customer extends BaseEntity{
     private String email;
 
     private String phone;
+
+    //@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //private Account account;
 }

@@ -24,7 +24,9 @@ public class LoanController {
 
     @GetMapping("/{mobileNumber}")
     public ResponseEntity<LoanDto> fetchLoan(@PathVariable String mobileNumber) {
+
         LoanDto loanDto = loanService.fetchLoan(mobileNumber);
+        //throw new RuntimeException("interrupt");
         return ResponseEntity.ok(loanDto);
     }
 

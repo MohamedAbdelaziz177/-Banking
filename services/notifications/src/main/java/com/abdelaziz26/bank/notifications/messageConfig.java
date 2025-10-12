@@ -18,7 +18,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class messageConfig {
 
-    private final JavaMailSender mailSender;
+    //private final JavaMailSender mailSender;
     private static final Logger logger = LoggerFactory.getLogger(messageConfig.class);
 
     @Value("${SMTP_USERNAME}")
@@ -26,17 +26,18 @@ public class messageConfig {
 
 
     @Bean
-    public Function<AccountMsgDto, AccountMsgDto> email() throws MessagingException
+    public Function<AccountMsgDto, AccountMsgDto> email()
     {
+        logger.info("Hey, I am here in notification service");
         return accountMsgDto -> {
-            try {
-                mailSender.send(this.getMimeMsg(accountMsgDto));
-                logger.info("An email successfully sent to user with Email {}", accountMsgDto.email());
-                return accountMsgDto;
-            }
-            catch (MessagingException e) {
-                logger.error(e.getMessage());
-            }
+            //try {
+            //    mailSender.send(this.getMimeMsg(accountMsgDto));
+            //    logger.info("An email successfully sent to user with Email {}", accountMsgDto.email());
+            //    return accountMsgDto;
+            //}
+            //catch (MessagingException e) {
+            //    logger.error(e.getMessage());
+            //}
             return null;
         };
     }
@@ -50,13 +51,13 @@ public class messageConfig {
         };
     }
 
-    private SimpleMailMessage getMimeMsg(AccountMsgDto accountMsgDto) throws MessagingException
-    {
-        SimpleMailMessage mimeMessage = new SimpleMailMessage();
-        mimeMessage.setFrom(From);
-        mimeMessage.setText("Congrats! You bank account has been successfully registered!");
-        mimeMessage.setTo(accountMsgDto.email());
-        mimeMessage.setSubject("Welcome on board! bankerSite");
-        return mimeMessage;
-    }
+    //private SimpleMailMessage getMimeMsg(AccountMsgDto accountMsgDto) throws MessagingException
+    //{
+    //    SimpleMailMessage mimeMessage = new SimpleMailMessage();
+    //    mimeMessage.setFrom(From);
+    //    mimeMessage.setText("Congrats! You bank account has been successfully registered!");
+    //    mimeMessage.setTo(accountMsgDto.email());
+    //    mimeMessage.setSubject("Welcome on board! bankerSite");
+    //    return mimeMessage;
+    //}
 }

@@ -1,5 +1,20 @@
 
 services:
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rmq-cont
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - 'rmq-data:/var/lib/rabbitmq'
+    networks:
+      - bank-ms-net
+    environment:
+       RABBITMQ_DEFAULT_USER: admin
+       RABBITMQ_DEFAULT_PASS: 1234
+
   postgres-accounts:
     environment:
       POSTGRES_DB: accounts-db
@@ -48,6 +63,7 @@ volumes:
   accounts-db-data:
   cards-db-data:
   loans-db-data:
+  rmq-data:
 
 networks:
   bank-ms-net:
