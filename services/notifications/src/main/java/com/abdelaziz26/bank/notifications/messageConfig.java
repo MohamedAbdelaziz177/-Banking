@@ -28,17 +28,18 @@ public class messageConfig {
     @Bean
     public Function<AccountMsgDto, AccountMsgDto> email()
     {
-        logger.info("Hey, I am here in notification service");
+
         return accountMsgDto -> {
-            //try {
-            //    mailSender.send(this.getMimeMsg(accountMsgDto));
-            //    logger.info("An email successfully sent to user with Email {}", accountMsgDto.email());
-            //    return accountMsgDto;
-            //}
-            //catch (MessagingException e) {
-            //    logger.error(e.getMessage());
-            //}
-            return null;
+            logger.info("Hey, I am here in notification service");
+        //    try {
+        //        mailSender.send(this.getMimeMsg(accountMsgDto));
+        //        logger.info("An email successfully sent to user with Email {}", accountMsgDto.email());
+        //        return accountMsgDto;
+        //    }
+        //    catch (MessagingException e) {
+        //        logger.error(e.getMessage());
+        //    }
+            return accountMsgDto;
         };
     }
 
