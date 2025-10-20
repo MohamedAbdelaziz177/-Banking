@@ -22,24 +22,24 @@ services:
     volumes:
       - keycloak-data:/var/lib/postgresql/data
 
-  keycloak:
-    image: docker.io/bitnami/keycloak:25.0.2
-    container_name: keycloak
-    restart: always
-    environment:
-      KEYCLOAK_DATABASE_VENDOR: postgres
-      KEYCLOAK_DATABASE_HOST: localhost
-      KEYCLOAK_DATABASE_PORT: 5435
-      KEYCLOAK_DATABASE_NAME: keycloak
-      KEYCLOAK_DATABASE_USER: admin
-      KEYCLOAK_DATABASE_PASSWORD: 1234
-      KEYCLOAK_ADMIN_USER: admin
-      KEYCLOAK_ADMIN_PASSWORD: 1234
-    ports:
-      - "5000:8080"
-    depends_on:
-      postgres-keycloak:
-        condition: service_healthy
+  #keycloak:
+  #  image: docker.io/bitnami/keycloak:25.0.2
+  #  container_name: keycloak
+  #  restart: always
+  #  environment:
+  #    KEYCLOAK_DATABASE_VENDOR: postgres
+  #    KEYCLOAK_DATABASE_HOST: localhost
+  #    KEYCLOAK_DATABASE_PORT: 5435
+  #    KEYCLOAK_DATABASE_NAME: keycloak
+  #    KEYCLOAK_DATABASE_USER: admin
+  #    KEYCLOAK_DATABASE_PASSWORD: 1234
+  #    KEYCLOAK_ADMIN_USER: admin
+  #    KEYCLOAK_ADMIN_PASSWORD: 1234
+  #  ports:
+  #    - "5000:8080"
+  #  depends_on:
+  #    postgres-keycloak:
+  #      condition: service_healthy
 
   #keycloak:
   #  image: quay.io/keycloak/keycloak:26.4.1

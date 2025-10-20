@@ -1,0 +1,24 @@
+{
+  "transactions": [
+    {
+      "amount": 150.00,
+      "type": "withdrawal",
+      "fromAccountId": 1001,
+      "date": "2024-01-18T08:45:00"
+    },
+    {
+      "amount": 2500.00,
+      "type": "deposit",
+      "toAccountId": 1002,
+      "date": "2024-01-18T10:20:00"
+    },
+    {
+      "amount": 400.50,
+      "type": "transfer",
+      "fromAccountId": 1003,
+      "toAccountId": 1001,
+      "date": "2024-01-18T12:15:00"
+    }
+  ]
+}
+
