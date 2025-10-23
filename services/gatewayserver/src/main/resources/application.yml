@@ -5,3 +5,10 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8888/"
 
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:4000/realms/master/protocol/openid-connect/certs"
+
