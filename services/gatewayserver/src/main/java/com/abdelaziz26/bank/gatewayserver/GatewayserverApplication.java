@@ -23,7 +23,7 @@ public class GatewayserverApplication {
                                 .filters(f -> f
                                         .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
                                         .addResponseHeader("service", "ACC_SERVICE")
-                                        .rewritePath("/api/accounts/(?<segment>.*)", "/${segment}")
+                                       // .rewritePath("/api/accounts/(?<segment>.*)", "/${segment}")
                                         .circuitBreaker(cb -> cb
                                                 .setName("accounts-circuit-breaker")
                                                 .setFallbackUri("forward:/fallback/contactSupport"))
@@ -37,7 +37,7 @@ public class GatewayserverApplication {
                                 .filters(f -> f
                                         .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
                                         .addResponseHeader("service", "CARD_SERVICE")
-                                        .rewritePath("/api/cards/(?<segment>.*)", "/${segment}")
+                                        // .rewritePath("/api/cards/(?<segment>.*)", "/${segment}")
                                 )
                                 .uri("lb://CARDS"))
                 .route(r ->
@@ -45,7 +45,7 @@ public class GatewayserverApplication {
                                 .filters(f -> f
                                         .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
                                         .addResponseHeader("service", "LOAN_SERVICE")
-                                        .rewritePath("/api/loans/(?<segment>.*)", "/${segment}")
+                                       // .rewritePath("/api/loans/(?<segment>.*)", "/${segment}")
                                 )
                                 .uri("lb://LOANS"))
                 .build();

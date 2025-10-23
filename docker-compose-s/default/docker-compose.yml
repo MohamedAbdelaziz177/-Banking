@@ -15,46 +15,32 @@ services:
        RABBITMQ_DEFAULT_USER: admin
        RABBITMQ_DEFAULT_PASS: 1234
 
-  postgres-keycloak:
-    extends:
-      file: common.yml
-      service: postgres-parent-service
-    volumes:
-      - keycloak-data:/var/lib/postgresql/data
-
-  #keycloak:
-  #  image: docker.io/bitnami/keycloak:25.0.2
-  #  container_name: keycloak
-  #  restart: always
-  #  environment:
-  #    KEYCLOAK_DATABASE_VENDOR: postgres
-  #    KEYCLOAK_DATABASE_HOST: localhost
-  #    KEYCLOAK_DATABASE_PORT: 5435
-  #    KEYCLOAK_DATABASE_NAME: keycloak
-  #    KEYCLOAK_DATABASE_USER: admin
-  #    KEYCLOAK_DATABASE_PASSWORD: 1234
-  #    KEYCLOAK_ADMIN_USER: admin
-  #    KEYCLOAK_ADMIN_PASSWORD: 1234
+  #postgres-keycloak:
+  #  extends:
+  #    file: common.yml
+  #    service: postgres-parent-service
   #  ports:
-  #    - "5000:8080"
-  #  depends_on:
-  #    postgres-keycloak:
-  #      condition: service_healthy
-
-  #keycloak:
-  #  image: quay.io/keycloak/keycloak:26.4.1
-  #  ports:
-  #    - "5000:8080"
+  #    - "5435:5432"
   #  environment:
-  #     KC_BOOTSTRAP_ADMIN_USERNAME: admin
-  #     KC_BOOTSTRAP_ADMIN_PASSWORD: 1234
-  #     KC_DB_URL: jdbc:postgresql://localhost:5432/keycloak
-  #     KC_DB_USERNAME: admin
-  #     KC_DB_PASSWORD: 1234
-  #  depends_on:
-  #    postgres-keycloak:
-  #      condition: service_healthy
-  #  command: "start-dev"
+  #    POSTGRES_DB: keycloak
+  #  volumes:
+  #    - keycloak-data:/var/lib/postgresql/da ta
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.1
+    ports:
+      - "4000:8080"
+    environment:
+       KC_BOOTSTRAP_ADMIN_USERNAME: admin
+       KC_BOOTSTRAP_ADMIN_PASSWORD: 1234
+       #KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
+       #KC_DB_USERNAME: admin
+       #KC_DB_PASSWORD: 1234
+    #depends_on:
+    #  postgres-keycloak:
+    #    condition: service_healthy
+    command: "start-dev"
 
   postgres-accounts:
     environment:
