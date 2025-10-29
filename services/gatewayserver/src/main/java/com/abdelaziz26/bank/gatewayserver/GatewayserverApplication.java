@@ -19,7 +19,7 @@ public class GatewayserverApplication {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r ->
-                        r.path("/api/accounts/**")
+                        r.path("/api/accounts/**", "/api/transactions/**", "/api/customer/**")
                                 .filters(f -> f
                                         .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
                                         .addResponseHeader("service", "ACC_SERVICE")
