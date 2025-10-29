@@ -44,12 +44,15 @@ public class AccountService {
 
         Account acc = createNewAccount();
         acc.setCustomer(customer);
-        customer.setAccount(acc); // ---> اوبشنال عشان الميموري كونسيستينسيي
+        //customer.setAccount(acc); // ---> اوبشنال عشان الميموري كونسيستينسيي
 
-        Customer savedCustomer = customerRepository.save(customer);
+        //Account savedAccount = accountsRepository.save(acc);
+        //Customer savedCustomer = customerRepository.save(customer);
         // NOTICE *** -> اللي عنده ال كاسكيد هو اللي هيسيف .. الاونر هو اللي هي سيت العلاقه
 
-        this.sendCommunication(acc, savedCustomer);
+        // (-________________-)
+
+        this.sendCommunication(acc, customer);
     }
 
 

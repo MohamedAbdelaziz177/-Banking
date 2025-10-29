@@ -24,6 +24,6 @@ public class Customer {
 
     private String phone;
 
-    @OneToOne(mappedBy = "customer", cascade =  CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "customer")
     private Account account;
 }

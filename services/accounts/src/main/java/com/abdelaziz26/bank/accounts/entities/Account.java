@@ -30,7 +30,7 @@ public class Account {
     @NotNull
     private BigDecimal balance;
 
-    @OneToOne
+    @OneToOne(cascade =  CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
