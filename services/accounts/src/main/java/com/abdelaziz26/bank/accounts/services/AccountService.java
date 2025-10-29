@@ -33,34 +33,21 @@ public class AccountService {
 
     @Transactional
     public void createAccount(CustomerDto customerDto) {
-        Customer customer = CustomerMapper.toEntity(customerDto);
+
         Optional<Customer> optionalCustomer = customerRepository.findByPhone(customerDto.getPhone());
         if(optionalCustomer.isPresent()) {
             throw new CustomerAlreadyExistsException("Customer already registered with given mobileNumber "
                     +customerDto.getPhone());
         }
 
+        Customer customer = CustomerMapper.toEntity(customerDto);
 
-        //logger.info("Customer saved with id: {}", savedCustomer.getCustomerId());
-       //Account acc = createNewAccount();
-
-       //customer.setAccount(acc);
-       //acc.setCustomer(customer);
-       //logger.info("Acc data : {}", acc);
-
-       //Customer savedCustomer = customerRepository.save(customer);
+        Account acc = createNewAccount();
+        acc.setCustomer(customer);
+        customer.setAccount(acc); // ---> اوبشنال عشان الميموري كونسيستينسيي
 
         Customer savedCustomer = customerRepository.save(customer);
-
-        // Create and save Account
-        Account acc = createNewAccount();
-        acc.setCustomer(savedCustomer);
-
-        //Account savedAcc = accountsRepository.save(acc);
-
-        // Update Customer with Account reference
-
-        //customerRepository.save(savedCustomer); // This update is optional if you don't need the back-reference
+        // NOTICE *** -> اللي عنده ال كاسكيد هو اللي هيسيف .. الاونر هو اللي هي سيت العلاقه
 
         this.sendCommunication(acc, savedCustomer);
     }
