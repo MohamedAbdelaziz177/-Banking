@@ -19,6 +19,18 @@
       "toAccountId": 1001,
       "date": "2024-01-18T12:15:00"
     }
-  ]
+  ],
+
+  "account": {
+    "name": "Mohamed Abdelaziz",
+    "email": "mohamecabdelaziz66@gmail.com",
+    "phone": "0123456789",
+    "accountDto": {
+      "accountType": "Savings",
+      "branchAddress": "123 Nile Street, Cairo, Egypt"
+    }
+  }
 }
+
+
 

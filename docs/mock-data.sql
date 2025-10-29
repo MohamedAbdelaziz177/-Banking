@@ -10,11 +10,10 @@ VALUES
     (7, 'david.miller@email.com', 'David Miller', '+1-555-0107'),
     (8, 'lisa.taylor@email.com', 'Lisa Taylor', '+1-555-0108'),
     (9, 'kevin.moore@email.com', 'Kevin Moore', '+1-555-0109'),
-    (10, 'amanda.jackson@email.com', 'Amanda Jackson', '+1-555-0110');
+    (10, 'amanda.jackson@email.com', 'Amanda Jackson', '+1-555-0110');v
 
 -- ===== ACCOUNTS =====
-INSERT INTO public.accounts (id, account_type, branch_address, customer_id)
-VALUES
+
 INSERT INTO public.accounts (customer_id, id, account_type, branch_address, balance)
 VALUES
     (1, 1001, 'SAVINGS', '123 Main Street, New York, NY 10001', 2500.00),
