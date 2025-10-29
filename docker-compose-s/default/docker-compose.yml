@@ -48,7 +48,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - accounts-db-data:/var/lib/postgresql/data
+      - accounts-db-data:/var/lib/postgresql
     extends:
       file: common.yml
       service: postgres-parent-service
@@ -59,7 +59,7 @@ services:
     ports:
       - '5433:5432'
     volumes:
-      - cards-db-data:/var/lib/postgresql/data
+      - cards-db-data:/var/lib/postgresql
     extends:
       file: common.yml
       service: postgres-parent-service
@@ -72,7 +72,7 @@ services:
     ports:
       - '5434:5432'
     volumes:
-      - loans-db-data:/var/lib/postgresql/data
+      - loans-db-data:/var/lib/postgresql
     extends:
       file: common.yml
       service: postgres-parent-service
