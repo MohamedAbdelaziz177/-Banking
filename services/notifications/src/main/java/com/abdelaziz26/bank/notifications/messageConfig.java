@@ -18,7 +18,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class messageConfig {
 
-    //private final JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
     private static final Logger logger = LoggerFactory.getLogger(messageConfig.class);
 
     @Value("${SMTP_USERNAME}")
@@ -31,14 +31,13 @@ public class messageConfig {
 
         return accountMsgDto -> {
             logger.info("Hey, I am here in notification service");
-        //    try {
-        //        mailSender.send(this.getMimeMsg(accountMsgDto));
-        //        logger.info("An email successfully sent to user with Email {}", accountMsgDto.email());
-        //        return accountMsgDto;
-        //    }
-        //    catch (MessagingException e) {
-        //        logger.error(e.getMessage());
-        //    }
+            try {
+                mailSender.send(this.getMimeMsg(accountMsgDto));
+                logger.info("An email successfully sent to user with Email {}", accountMsgDto.email());
+            }
+            catch (MessagingException e) {
+                logger.error(e.getMessage());
+            }
             return accountMsgDto;
         };
     }
@@ -52,13 +51,30 @@ public class messageConfig {
         };
     }
 
-    //private SimpleMailMessage getMimeMsg(AccountMsgDto accountMsgDto) throws MessagingException
-    //{
-    //    SimpleMailMessage mimeMessage = new SimpleMailMessage();
-    //    mimeMessage.setFrom(From);
-    //    mimeMessage.setText("Congrats! You bank account has been successfully registered!");
-    //    mimeMessage.setTo(accountMsgDto.email());
-    //    mimeMessage.setSubject("Welcome on board! bankerSite");
-    //    return mimeMessage;
-    //}
+
+    @Bean
+    public Function<AccountMsgDto, Long> transaction()
+    {
+        return accountMsgDto -> {
+            logger.info("Notifying transaction with Phone number {} ", accountMsgDto.phone());
+            try {
+                mailSender.send(this.getMimeMsg(accountMsgDto));
+                logger.debug("An email successfully sent to user with Email {}", accountMsgDto.email());
+            }
+            catch (MessagingException e){
+                logger.error(e.getMessage());
+            }
+            return accountMsgDto.accountNumber();
+        };
+    }
+
+    private SimpleMailMessage getMimeMsg(AccountMsgDto accountMsgDto) throws MessagingException
+    {
+        SimpleMailMessage mimeMessage = new SimpleMailMessage();
+        mimeMessage.setFrom(From);
+        mimeMessage.setText("Congrats! You bank account has been successfully registered!");
+        mimeMessage.setTo(accountMsgDto.email());
+        mimeMessage.setSubject("Welcome on board! bankerSite");
+        return mimeMessage;
+    }
 }
