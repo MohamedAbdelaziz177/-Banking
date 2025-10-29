@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.function.Function;
 
@@ -32,7 +33,7 @@ public class messageConfig {
         return accountMsgDto -> {
             logger.info("Hey, I am here in notification service");
             try {
-                mailSender.send(this.getMimeMsg(accountMsgDto));
+                sendEmail(accountMsgDto);
                 logger.info("An email successfully sent to user with Email {}", accountMsgDto.email());
             }
             catch (MessagingException e) {
@@ -76,5 +77,11 @@ public class messageConfig {
         mimeMessage.setTo(accountMsgDto.email());
         mimeMessage.setSubject("Welcome on board! bankerSite");
         return mimeMessage;
+    }
+
+    @Async
+    public void sendEmail(AccountMsgDto accountMsgDto) throws MessagingException
+    {
+        mailSender.send(this.getMimeMsg(accountMsgDto));
     }
 }
