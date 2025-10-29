@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to BankerSite</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 20px;">
+<div style="max-width: 600px; background: white; margin: auto; border-radius: 8px; padding: 20px;">
+    <h2 style="color: #007bff;">Welcome, <span th:text="${name}">User</span>!</h2>
+    <p>We’re excited to have you on board 🎉</p>
+    <p>Your new account number is: <strong th:text="${accountNumber}">000000</strong></p>
+    <p>Login anytime to manage your banking services easily.</p>
+    <hr>
+    <small>— The BankerSite Team</small>
+</div>
+</body>
+</html>

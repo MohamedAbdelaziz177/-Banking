@@ -11,7 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.function.Function;
 
@@ -20,11 +23,11 @@ import java.util.function.Function;
 public class messageConfig {
 
     private final JavaMailSender mailSender;
+    private final TemplateEngine templateEngine;
     private static final Logger logger = LoggerFactory.getLogger(messageConfig.class);
 
     @Value("${SMTP_USERNAME}")
     private String From;
-
 
     @Bean
     public Function<AccountMsgDto, AccountMsgDto> email()
@@ -82,6 +85,19 @@ public class messageConfig {
     @Async
     public void sendEmail(AccountMsgDto accountMsgDto) throws MessagingException
     {
-        mailSender.send(this.getMimeMsg(accountMsgDto));
+        Context context = new Context();
+        context.setVariable("name", accountMsgDto.email());
+        context.setVariable("accountNumber", accountMsgDto.accountNumber());
+
+        String htmlContent = templateEngine.process("welcome.html", context);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(accountMsgDto.email());
+        helper.setSubject("Welcome to BankerSite! 🎉🎉🎉");
+        helper.setText(htmlContent, true);
+
+        mailSender.send(message);
+        logger.info(" HTML welcome email sent successfully");
     }
 }
