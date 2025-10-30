@@ -14,6 +14,11 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    @GetMapping("/testFaultTolerance")
+    public ResponseEntity<?> testFaultTolerance() {
+        throw new RuntimeException("testFaultTolerance");
+    }
+
     @PostMapping
     public ResponseEntity<String> createAccount(@RequestBody CustomerDto customerDto) {
         accountService.createAccount(customerDto);

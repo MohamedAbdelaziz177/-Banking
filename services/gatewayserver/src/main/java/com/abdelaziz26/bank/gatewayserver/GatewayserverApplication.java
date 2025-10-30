@@ -21,7 +21,7 @@ public class GatewayserverApplication {
                 .route(r ->
                         r.path("/api/accounts/**", "/api/transactions/**", "/api/customer/**")
                                 .filters(f -> f
-                                        .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
+                                        .addRequestHeader("time-stamp", LocalDateTime.now().toString())
                                         .addResponseHeader("service", "ACC_SERVICE")
                                        // .rewritePath("/api/accounts/(?<segment>.*)", "/${segment}")
                                         .circuitBreaker(cb -> cb
@@ -35,17 +35,19 @@ public class GatewayserverApplication {
                 .route(r ->
                         r.path("/api/cards/**")
                                 .filters(f -> f
-                                        .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
+                                        .addRequestHeader("time-stamp", LocalDateTime.now().toString())
                                         .addResponseHeader("service", "CARD_SERVICE")
-                                        // .rewritePath("/api/cards/(?<segment>.*)", "/${segment}")
+                                        .circuitBreaker(config -> {
+                                            config.setName("cards-circuit-breaker");
+                                            config.setFallbackUri("forward:/fallback/contactSupport");
+                                        })
                                 )
                                 .uri("lb://CARDS"))
                 .route(r ->
                         r.path("/api/loans/**")
                                 .filters(f -> f
-                                        .addRequestHeader("time-stamp", "#{T(java.time.LocalDateTime).now()}")
+                                        .addRequestHeader("time-stamp", LocalDateTime.now().toString())
                                         .addResponseHeader("service", "LOAN_SERVICE")
-                                       // .rewritePath("/api/loans/(?<segment>.*)", "/${segment}")
                                 )
                                 .uri("lb://LOANS"))
                 .build();
