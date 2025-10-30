@@ -24,11 +24,11 @@ resilience4j:
   circuitbreaker:
     configs:
       default:
-        slidingWindowSize: 5
+        slidingWindowSize: 4
         failure-rate-threshold: 50
         permitted-number-of-calls-in-half-open-state: 2
         wait-duration-in-open-state:
-          seconds: 2
+          seconds: 4
 
 microservices:
   cards:

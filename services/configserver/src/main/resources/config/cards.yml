@@ -1,6 +1,5 @@
 
 server:
-  address: localhost
   port: 8090
 
 spring:
