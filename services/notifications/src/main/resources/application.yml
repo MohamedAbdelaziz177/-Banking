@@ -9,12 +9,15 @@ spring:
 
   cloud:
     function:
-      definition: email|sms
+      definition: email|sms;transactions
 
     stream:
       bindings:
         emailsms-in-0:
-          destination: send-notifications
+          destination: welcome-notifications
+          group: ${spring.application.name}
+        transactions-in-0:
+          destination: transactions-notifications
           group: ${spring.application.name}
 
   rabbitmq:
