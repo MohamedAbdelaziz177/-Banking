@@ -20,15 +20,6 @@ eureka:
     fetch-registry: true
 
 
-resilience4j:
-  circuitbreaker:
-    configs:
-      default:
-        slidingWindowSize: 4
-        failure-rate-threshold: 50
-        permitted-number-of-calls-in-half-open-state: 2
-        wait-duration-in-open-state:
-          seconds: 4
 
 microservices:
   cards:

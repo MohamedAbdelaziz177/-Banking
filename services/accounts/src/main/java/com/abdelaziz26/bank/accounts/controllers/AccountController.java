@@ -2,6 +2,7 @@ package com.abdelaziz26.bank.accounts.controllers;
 
 import com.abdelaziz26.bank.accounts.dto.CustomerDto;
 import com.abdelaziz26.bank.accounts.services.AccountService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,16 @@ public class AccountController {
         return ResponseEntity.ok("I WILL BE SHOWN IF YOU REMOVE BREAKPOINT ONLY");
     }
 
-
+    @RateLimiter(name = "accRL", fallbackMethod = "testRLFallback")
+    @GetMapping("/testRateLimiter")
+    public ResponseEntity<?> testRL() {
+        logger.debug("I have tokens ..");
+        return ResponseEntity.ok("I have tokens ..");
+    }
+    public ResponseEntity<?> testRLFallback(Throwable t) {
+        logger.debug("Tokens Gone away :(");
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
+    }
 
 
     @PostMapping
