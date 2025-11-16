@@ -24,7 +24,7 @@ public class AccountController {
 
     @GetMapping("/testRetry")
     public ResponseEntity<?> testRetry() {
-        logger.info("I should be shown 3 times..\uD83D\uDC85");
+        logger.debug("I should be shown 3 times..\uD83D\uDC85");
         throw new RuntimeException("testRetry");
     }
 
@@ -34,6 +34,9 @@ public class AccountController {
         logger.debug("put breakpoint here");
         return ResponseEntity.ok("I WILL BE SHOWN IF YOU REMOVE BREAKPOINT ONLY");
     }
+
+
+
 
     @PostMapping
     public ResponseEntity<String> createAccount(@RequestBody CustomerDto customerDto) {
