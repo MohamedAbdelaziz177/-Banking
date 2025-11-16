@@ -34,12 +34,6 @@ services:
     environment:
        KC_BOOTSTRAP_ADMIN_USERNAME: admin
        KC_BOOTSTRAP_ADMIN_PASSWORD: 1234
-       #KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
-       #KC_DB_USERNAME: admin
-       #KC_DB_PASSWORD: 1234
-    #depends_on:
-    #  postgres-keycloak:
-    #    condition: service_healthy
     command: "start-dev"
 
   postgres-accounts:

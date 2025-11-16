@@ -5,8 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+
+import static org.springframework.cloud.gateway.support.RouteMetadataUtils.CONNECT_TIMEOUT_ATTR;
+import static org.springframework.cloud.gateway.support.RouteMetadataUtils.RESPONSE_TIMEOUT_ATTR;
 
 @SpringBootApplication
 public class GatewayserverApplication {
@@ -20,14 +25,30 @@ public class GatewayserverApplication {
         return builder.routes()
                 .route(r ->
                         r.path("/api/accounts/**", "/api/transactions/**", "/api/customer/**")
+
                                 .filters(f -> f
                                         .addRequestHeader("time-stamp", LocalDateTime.now().toString())
+
+
                                         .addResponseHeader("service", "ACC_SERVICE")
-                                       // .rewritePath("/api/accounts/(?<segment>.*)", "/${segment}")
+
+                                        /*  --- circuit breaker's timeout & retry 's autoconfig always takes higher priority than
+                                         explicitly added ones thus, if u need to customize and test them like here -> comment circuit breaker */
+
                                         .circuitBreaker(cb -> cb
                                                 .setName("accounts-circuit-breaker")
-                                                .setFallbackUri("forward:/fallback/contactSupport"))
+                                                .setFallbackUri("forward:/fallback/contactSupport")
+                                        )
+
+                                        .retry(rc ->
+                                                rc
+                                                        .setRetries(3)
+                                                        .setMethods(HttpMethod.GET)
+                                                        .setBackoff(Duration.ofSeconds(1), Duration.ofSeconds(10),2, true)
+                                        )
                                 )
+                                .metadata(RESPONSE_TIMEOUT_ATTR, 200)
+                                .metadata(CONNECT_TIMEOUT_ATTR, 200)
                                 .uri("lb://ACCOUNTS")
                 )
 

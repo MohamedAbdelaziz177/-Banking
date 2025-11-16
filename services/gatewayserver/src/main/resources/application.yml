@@ -12,3 +12,25 @@ spring:
         jwt:
           jwk-set-uri: "http://localhost:4000/realms/master/protocol/openid-connect/certs"
 
+resilience4j.circuitbreaker:
+  instances:
+    accounts-circuit-breaker:
+      slidingWindowSize: 5
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10s
+      permitted-number-of-calls-in-half-open-state: 2
+    cards-circuit-breaker:
+      slidingWindowSize: 5
+      failureRateThreshold: 60
+      waitDurationInOpenState: 15s
+      permitted-number-of-calls-in-half-open-state: 2
+
+resilience4j.retry:
+  instances:
+    backendA:
+      maxAttempts: 3
+      waitDuration: 10s
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - java.lang.NullPointerException

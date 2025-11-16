@@ -25,17 +25,5 @@ management:
     health:
       show-details: always
 
-resilience4j:
-  circuitbreaker:
-    accounts-circuit-breaker:
-      slidingWindowSize: 5
-      failureRateThreshold: 50
-      waitDurationInOpenState: 10s
-      permitted-number-of-calls-in-half-open-state: 2
 
-      cards-circuit-breaker:
-        slidingWindowSize: 5
-        failureRateThreshold: 60
-        waitDurationInOpenState: 15s
-        permitted-number-of-calls-in-half-open-state: 2
 

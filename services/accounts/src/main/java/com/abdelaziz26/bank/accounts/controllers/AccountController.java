@@ -3,6 +3,8 @@ package com.abdelaziz26.bank.accounts.controllers;
 import com.abdelaziz26.bank.accounts.dto.CustomerDto;
 import com.abdelaziz26.bank.accounts.services.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,24 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     private final AccountService accountService;
+    private final static Logger logger = LoggerFactory.getLogger(AccountController.class);
 
-    @GetMapping("/testFaultTolerance")
-    public ResponseEntity<?> testFaultTolerance() {
+    @GetMapping("/testCircuitBreaker")
+    public ResponseEntity<?> testCircuitBreaker() {
         throw new RuntimeException("testFaultTolerance");
+    }
+
+    @GetMapping("/testRetry")
+    public ResponseEntity<?> testRetry() {
+        logger.info("I should be shown 3 times..\uD83D\uDC85");
+        throw new RuntimeException("testRetry");
+    }
+
+    @GetMapping("/testTimeout")
+    public ResponseEntity<?> testTimeout(){
+
+        logger.debug("put breakpoint here");
+        return ResponseEntity.ok("I WILL BE SHOWN IF YOU REMOVE BREAKPOINT ONLY");
     }
 
     @PostMapping
