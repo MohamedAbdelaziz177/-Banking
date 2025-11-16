@@ -2,6 +2,8 @@ package com.abdelaziz26.bank.gatewayserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +23,7 @@ public class GatewayserverApplication {
     }
 
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder, RedisRateLimiter redisRateLimiter, KeyResolver keyResolver) {
         return builder.routes()
                 .route(r ->
                         r.path("/api/accounts/**", "/api/transactions/**", "/api/customer/**")
@@ -46,6 +48,7 @@ public class GatewayserverApplication {
                                                         .setMethods(HttpMethod.GET)
                                                         .setBackoff(Duration.ofSeconds(1), Duration.ofSeconds(10),2, true)
                                         )
+                                        .requestRateLimiter(rlc -> rlc.setRateLimiter(redisRateLimiter).setKeyResolver(keyResolver))
                                 )
                                 .metadata(RESPONSE_TIMEOUT_ATTR, 200)
                                 .metadata(CONNECT_TIMEOUT_ATTR, 200)
@@ -62,6 +65,7 @@ public class GatewayserverApplication {
                                             config.setName("cards-circuit-breaker");
                                             config.setFallbackUri("forward:/fallback/contactSupport");
                                         })
+                                        .requestRateLimiter(rlc -> rlc.setRateLimiter(redisRateLimiter).setKeyResolver(keyResolver))
                                 )
                                 .uri("lb://CARDS"))
                 .route(r ->
@@ -69,6 +73,7 @@ public class GatewayserverApplication {
                                 .filters(f -> f
                                         .addRequestHeader("time-stamp", LocalDateTime.now().toString())
                                         .addResponseHeader("service", "LOAN_SERVICE")
+                                        .requestRateLimiter(rlc -> rlc.setRateLimiter(redisRateLimiter).setKeyResolver(keyResolver))
                                 )
                                 .uri("lb://LOANS"))
                 .build();
