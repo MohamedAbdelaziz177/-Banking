@@ -25,3 +25,8 @@ resilience4j.circuitbreaker:
       waitDurationInOpenState: 15s
       permitted-number-of-calls-in-half-open-state: 2
 
+management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1
