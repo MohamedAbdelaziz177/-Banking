@@ -1,16 +1,16 @@
 -- ===== CUSTOMERS =====
 INSERT INTO public.customers (id, email, name, phone)
 VALUES
-    (1, 'john.doe@email.com', 'John Doe', '+1-555-0101'),
-    (2, 'jane.smith@email.com', 'Jane Smith', '+1-555-0102'),
-    (3, 'robert.johnson@email.com', 'Robert Johnson', '+1-555-0103'),
-    (4, 'sarah.wilson@email.com', 'Sarah Wilson', '+1-555-0104'),
+    (1, 'john.doe@email.com', 'John Doe', '01060328954'),
+    (2, 'jane.smith@email.com', 'Jane Smith', '01060328955'),
+    (3, 'robert.johnson@email.com', 'Robert Johnson', '01060328958'),
+    (4, 'sarah.wilson@email.com', 'Sarah Wilson', '01060328957'),
     (5, 'mike.brown@email.com', 'Mike Brown', '+1-555-0105'),
     (6, 'emily.davis@email.com', 'Emily Davis', '+1-555-0106'),
     (7, 'david.miller@email.com', 'David Miller', '+1-555-0107'),
     (8, 'lisa.taylor@email.com', 'Lisa Taylor', '+1-555-0108'),
     (9, 'kevin.moore@email.com', 'Kevin Moore', '+1-555-0109'),
-    (10, 'amanda.jackson@email.com', 'Amanda Jackson', '+1-555-0110');v
+    (10, 'amanda.jackson@email.com', 'Amanda Jackson', '+1-555-0110');
 
 -- ===== ACCOUNTS =====
 
