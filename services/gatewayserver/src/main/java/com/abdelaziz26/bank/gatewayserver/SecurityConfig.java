@@ -19,8 +19,15 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange(exchange -> exchange
-                .pathMatchers("/api/accounts/testRetry", "/api/accounts/testTimeout", "/api/accounts/testFaultTolerance", "/api/accounts/testRateLimiter").permitAll()
-                .pathMatchers("/api/accounts/**").hasRole("ACCOUNTS")
+                .pathMatchers("/api/accounts/testRetry",
+                        "/api/accounts/testTimeout",
+                        "/api/accounts/testCircuitBreaker",
+                        "/api/accounts/testRateLimiter").permitAll()
+
+                .pathMatchers("/api/accounts/**",
+                        "/api/customer/**",
+                        "/api/transactions/**").hasRole("ACCOUNTS")
+
                 .pathMatchers("/api/cards/**").hasRole("CARDS")
                 .pathMatchers("/api/loans/**").hasRole("LOANS")
         ).oauth2ResourceServer(spec ->
