@@ -43,6 +43,13 @@ services:
     networks:
       - bank-ms-net
 
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - bank-ms-net
+
   postgres-accounts:
     environment:
       POSTGRES_DB: accounts-db

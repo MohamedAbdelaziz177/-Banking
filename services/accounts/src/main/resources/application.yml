@@ -35,3 +35,9 @@ resilience4j.ratelimiter:
   instances:
     accRL:
       base-config: default
+
+management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1

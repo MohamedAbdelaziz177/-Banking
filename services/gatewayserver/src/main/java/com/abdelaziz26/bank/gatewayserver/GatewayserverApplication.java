@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -17,6 +18,21 @@ import static org.springframework.cloud.gateway.support.RouteMetadataUtils.RESPO
 
 @SpringBootApplication
 public class GatewayserverApplication {
+
+    @Bean
+    public RedisRateLimiter redisRateLimiter() {
+        return new RedisRateLimiter(1, 2, 2);
+    }
+
+    @Bean
+    public KeyResolver keyResolver() {
+        return exchange -> Mono.just(exchange
+                .getRequest()
+                .getRemoteAddress()
+                .getAddress()
+                .getHostAddress()
+        );
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayserverApplication.class, args);
@@ -48,7 +64,7 @@ public class GatewayserverApplication {
                                                         .setMethods(HttpMethod.GET)
                                                         .setBackoff(Duration.ofSeconds(1), Duration.ofSeconds(10),2, true)
                                         )
-                                        .requestRateLimiter(rlc -> rlc.setRateLimiter(redisRateLimiter).setKeyResolver(keyResolver))
+                                        .requestRateLimiter(rlc -> rlc.setRateLimiter(redisRateLimiter()).setKeyResolver(keyResolver()))
                                 )
                                 .metadata(RESPONSE_TIMEOUT_ATTR, 200)
                                 .metadata(CONNECT_TIMEOUT_ATTR, 200)
