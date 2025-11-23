@@ -256,10 +256,10 @@ Implemented with **Spring Cloud Stream** for message broker abstraction:
 docker-compose up -d
 
 # Access services
-- API Gateway: http://localhost:8080
+- API Gateway: http://localhost:8085
 - Eureka Dashboard: http://localhost:8761
 - Zipkin UI: http://localhost:9411
-- Keycloak Admin: http://localhost:8180
+- Keycloak Admin: http://localhost:4000
 ```
 
 ---
@@ -270,18 +270,6 @@ docker-compose up -d
 - 🔒 **Enhanced Security** - mTLS for service-to-service communication
 - 🧪 **Contract Testing** - Pact for consumer-driven contracts
 - 🔄 **Advanced Messaging** - Event sourcing and CQRS patterns
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
 
 ---
 
