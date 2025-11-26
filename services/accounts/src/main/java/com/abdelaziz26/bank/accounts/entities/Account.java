@@ -17,6 +17,8 @@ public class Account {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    private Long id;
+
     private Long accountNumber;
 
     @Column(name="account_type")
@@ -26,12 +28,10 @@ public class Account {
     @Column(name="branch_address")
     private String branchAddress;
 
-    @Positive
-    @NotNull
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @OneToOne(cascade =  CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
     @OneToMany(mappedBy = "toAccount")

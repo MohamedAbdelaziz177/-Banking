@@ -44,13 +44,12 @@ public class AccountService {
 
         Account acc = createNewAccount();
         acc.setCustomer(customer);
-        //customer.setAccount(acc); // ---> اوبشنال عشان الميموري كونسيستينسيي
+        customer.setAccount(acc); // ---> اوبشنال عشان الميموري كونسيستينسيي
 
-        //Account savedAccount = accountsRepository.save(acc);
+        accountsRepository.save(acc);
+
         //Customer savedCustomer = customerRepository.save(customer);
         // NOTICE *** -> اللي عنده ال كاسكيد هو اللي هيسيف .. الاونر هو اللي هي سيت العلاقه
-
-        // (-________________-)
 
         this.sendCommunication(acc, customer);
     }
@@ -82,8 +81,8 @@ public class AccountService {
         Customer customer = customerRepository.findByPhone(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        Account account = accountsRepository.findByCustomer_CustomerId(customer.getCustomerId()).orElseThrow(
-                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+        Account account = accountsRepository.findByCustomer_Id(customer.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", customer.getId().toString())
         );
         CustomerDto customerDto = CustomerMapper.toDto(customer);
         customerDto.setAccountDto(AccountMapper.toDto(account));
@@ -105,7 +104,7 @@ public class AccountService {
             Customer customer = account.getCustomer();
 
             Customer updatedCustomer =  CustomerMapper.toEntity(customerDto);
-            updatedCustomer.setCustomerId(customer.getCustomerId());
+            updatedCustomer.setId(customer.getId());
             customerRepository.save(customer);
 
             isUpdated = true;
@@ -118,8 +117,8 @@ public class AccountService {
         Customer customer = customerRepository.findByPhone(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        accountsRepository.deleteByCustomer_CustomerId(customer.getCustomerId());
-        customerRepository.deleteById(customer.getCustomerId());
+        accountsRepository.deleteByCustomer_Id(customer.getId());
+        customerRepository.deleteById(customer.getId());
         return true;
     }
 }
