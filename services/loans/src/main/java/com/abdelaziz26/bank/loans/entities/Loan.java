@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Loan {
 
     @Id
@@ -22,9 +23,9 @@ public class Loan {
 
     private String loanType;
 
-    private int totalLoan;
+    private Double totalLoan;
 
-    private int amountPaid;
+    private Double amountPaid;
 
-    private int outstandingAmount;
+    private Double outstandingAmount;
 }

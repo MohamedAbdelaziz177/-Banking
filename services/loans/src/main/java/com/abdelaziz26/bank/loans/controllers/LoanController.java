@@ -1,11 +1,16 @@
 package com.abdelaziz26.bank.loans.controllers;
 
 import com.abdelaziz26.bank.loans.dtos.LoanDto;
+import com.abdelaziz26.bank.loans.dtos.LoanPaymentRequest;
+import com.abdelaziz26.bank.loans.dtos.LoanPaymentResponse;
 import com.abdelaziz26.bank.loans.services.LoanService;
+import com.abdelaziz26.bank.loans.services.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/loans")
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class LoanController {
 
     private final LoanService loanService;
+    private final PaymentService paymentService;
 
     @PostMapping("/{mobileNumber}")
     public ResponseEntity<String> createLoan(@PathVariable String mobileNumber) {
@@ -50,5 +56,15 @@ public class LoanController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to delete loan.");
         }
+    }
+
+    @PostMapping("/pay-loan")
+    public ResponseEntity<LoanPaymentResponse> addLoanPayment(@RequestBody LoanPaymentRequest loanPaymentRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.pay(loanPaymentRequest));
+    }
+
+    @GetMapping("/payment-transactions")
+    public ResponseEntity<List<LoanPaymentResponse>> fetchPaymentTransactions(@RequestParam Long loanId) {
+        return ResponseEntity.ok(paymentService.findAllByLoanId(loanId));
     }
 }
