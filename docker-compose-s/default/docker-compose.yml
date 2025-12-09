@@ -1,6 +1,6 @@
+version: "2.4"
 
 services:
-
   rabbitmq:
     image: rabbitmq:4-management
     container_name: rmq-cont

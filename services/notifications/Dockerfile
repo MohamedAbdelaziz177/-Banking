@@ -14,8 +14,8 @@ FROM eclipse-temurin:17-jre-alpine AS final
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar cards.jar
+COPY --from=build /app/target/*.jar notifications.jar
 
 EXPOSE 9000
 
-ENTRYPOINT ["java", "-jar", "cards.jar"]
+ENTRYPOINT ["java", "-jar", "notifications.jar"]

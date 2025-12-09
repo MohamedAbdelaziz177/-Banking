@@ -23,9 +23,13 @@ services:
     ports:
       - '5050:80'
     depends_on:
-      - postgres-accounts
-      - postgres-cards
-      - postgres-loans
+      postgres-accounts:
+        condition: service_healthy
+      postgres-cards:
+        condition: service_healthy
+      postgres-loans:
+        condition: service_healthy
+
     restart: always
     networks:
       - bank-ms-net
