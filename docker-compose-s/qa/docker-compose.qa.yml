@@ -69,7 +69,7 @@ services:
        config-server-ms:
          condition: service_healthy
 
-  accounts-ms:
+  accounts-ms-r1:
     build: ../../services/accounts
     container_name: accounts-cont
     ports:
@@ -77,6 +77,15 @@ services:
     extends:
       file: common-qa.yml
       service: business-ms-parent
+
+  #accounts-ms-r2:
+  #  build: ../../services/accounts
+  #  container_name: accounts-cont
+  #  ports:
+  #    - "8081:8080"
+  #  extends:
+  #    file: common-qa.yml
+  #    service: business-ms-parent
 
 
   cards-ms:
