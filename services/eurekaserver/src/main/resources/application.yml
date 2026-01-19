@@ -6,6 +6,19 @@ spring:
     import: "optional:configserver:http://localhost:8888"
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metrics
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
   tracing:
     enabled: true
     sampling:

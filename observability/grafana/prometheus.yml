@@ -1,0 +1,94 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:9080' ]
+        labels:
+          application: 'Prometheus Service Application'
+
+
+  - job_name: 'gatewayserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8080' ]
+        labels:
+          service: 'api-gateway'
+          tier: 'gateway'
+
+        # Service Discovery (Eureka/Consul)
+  - job_name: 'eurekaserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8761' ]
+        labels:
+          service: 'eureka-server'
+          tier: 'infrastructure'
+
+  # Config Server
+  - job_name: 'configserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8888' ]
+        labels:
+          service: 'config-server'
+          tier: 'infrastructure'
+
+  - job_name: 'accounts'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+        labels:
+          application: 'Accounts Service Application'
+
+  - job_name: 'cards'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:9000']
+        labels:
+          application: 'Cards Service Application'
+
+  - job_name: 'loans'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8090']
+        labels:
+          application: 'Loans Service Application'
+
+  - job_name: 'notification'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+        labels:
+          application: 'Notification Service Application'
+
+
+ ##### ------ FOR QA profile ------- ####
+
+##    global:
+##      scrape_interval: 15s
+##      evaluation_interval: 15s
+##      external_labels:
+##        cluster: 'microservices-cluster'
+##        environment: 'development'
+##
+##    scrape_configs:
+##      # Prometheus self-monitoring
+##      - job_name: 'prometheus'
+##        static_configs:
+##          - targets: ['localhost:9090']
+##
+##      # All microservices running in Docker
+##      - job_name: 'microservices'
+##        metrics_path: '/actuator/prometheus'
+##        static_configs:
+##          - targets:
+##              - 'api-gateway:8080'
+##              - 'eureka-server:8761'
+##              - 'config-server:8888'
+##              - 'cards-ms:9000'
+##              - 'loans-ms:9001'
+##              - 'accounts-ms:9002'
+##              - 'notification-ms:9003'

@@ -39,6 +39,19 @@ spring:
             enable: true
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metrics
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
   tracing:
     enabled: true
     sampling:
