@@ -23,3 +23,7 @@ management:
     enabled: true
     sampling:
       probability: 1
+
+logging:
+  file:
+    name: logs/eureka.log

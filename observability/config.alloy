@@ -1,0 +1,35 @@
+local.file_match "microservice_logs" {
+  path_targets = [
+    {"__path__" = "/var/log/microservices/**/*.log"},
+  ]
+}
+
+loki.source.file "app_logs" {
+  targets    = local.file_match.microservice_logs.targets
+  forward_to = [loki.process.extract_labels.receiver]
+}
+
+loki.process "extract_labels" {
+  forward_to = [loki.write.local_loki.receiver]
+
+  stage.static_labels {
+    values = {}
+  }
+
+  stage.regex {
+    expression = "/var/log/microservices/(?P<service>[^/]+)/"
+    source     = "filename"  // Alloy sets "filename" automatically from __path__
+  }
+
+  stage.labels {
+    values = {
+      service = "",
+    }
+  }
+}
+
+loki.write "local_loki" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}

@@ -55,4 +55,6 @@ management:
     sampling:
       probability: 1
 
-
+logging:
+  file:
+    name: logs/accounts.log

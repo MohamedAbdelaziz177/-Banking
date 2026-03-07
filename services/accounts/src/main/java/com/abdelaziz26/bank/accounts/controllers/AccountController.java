@@ -25,14 +25,14 @@ public class AccountController {
 
     @GetMapping("/testRetry")
     public ResponseEntity<?> testRetry() {
-        logger.debug("I should be shown 3 times..\uD83D\uDC85");
+        logger.info("I should be shown 3 times..\uD83D\uDC85");
         throw new RuntimeException("testRetry");
     }
 
     @GetMapping("/testTimeout")
     public ResponseEntity<?> testTimeout(){
 
-        logger.debug("put breakpoint here");
+        logger.info("put breakpoint here");
         return ResponseEntity.ok("I WILL BE SHOWN IF YOU REMOVE BREAKPOINT ONLY");
     }
 

@@ -57,3 +57,6 @@ management:
     sampling:
       probability: 1
 
+logging:
+  file:
+    name: logs/notifications.log
