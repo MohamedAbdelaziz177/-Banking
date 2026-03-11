@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -50,8 +51,7 @@ public class GatewayserverApplication {
 
                                         .addResponseHeader("service", "ACC_SERVICE")
 
-                                        /*  --- circuit breaker's timeout & retry 's autoconfig always takes higher priority than
-                                         explicitly added ones thus, if u need to customize and test them like here -> comment circuit breaker */
+                                        .requestRateLimiter(rlc -> rlc.setRateLimiter(redisRateLimiter).setKeyResolver(keyResolver))
 
                                         .circuitBreaker(cb -> cb
                                                 .setName("accounts-circuit-breaker")
@@ -62,12 +62,14 @@ public class GatewayserverApplication {
                                                 rc
                                                         .setRetries(3)
                                                         .setMethods(HttpMethod.GET)
+                                                        .setStatuses(HttpStatus.INTERNAL_SERVER_ERROR)
                                                         .setBackoff(Duration.ofSeconds(1), Duration.ofSeconds(10),2, true)
+
                                         )
-                                        .requestRateLimiter(rlc -> rlc.setRateLimiter(redisRateLimiter()).setKeyResolver(keyResolver()))
+
                                 )
-                                .metadata(RESPONSE_TIMEOUT_ATTR, 200)
-                                .metadata(CONNECT_TIMEOUT_ATTR, 200)
+                                .metadata(RESPONSE_TIMEOUT_ATTR, 35000)
+                                .metadata(CONNECT_TIMEOUT_ATTR, 3000)
                                 .uri("lb://ACCOUNTS")
                 )
 

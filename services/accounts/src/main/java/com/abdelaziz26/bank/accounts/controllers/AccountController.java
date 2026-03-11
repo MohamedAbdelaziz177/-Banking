@@ -30,8 +30,9 @@ public class AccountController {
     }
 
     @GetMapping("/testTimeout")
-    public ResponseEntity<?> testTimeout(){
+    public ResponseEntity<?> testTimeout() throws InterruptedException {
 
+        Thread.sleep(40000);
         logger.info("put breakpoint here");
         return ResponseEntity.ok("I WILL BE SHOWN IF YOU REMOVE BREAKPOINT ONLY");
     }
@@ -39,11 +40,11 @@ public class AccountController {
     @RateLimiter(name = "accRL", fallbackMethod = "testRLFallback")
     @GetMapping("/testRateLimiter")
     public ResponseEntity<?> testRL() {
-        logger.debug("I have tokens ..");
+        logger.info("I have tokens ..");
         return ResponseEntity.ok("I have tokens ..");
     }
     public ResponseEntity<?> testRLFallback(Throwable t) {
-        logger.debug("Tokens Gone away :(");
+        logger.info("Tokens Gone away :(");
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
     }
 

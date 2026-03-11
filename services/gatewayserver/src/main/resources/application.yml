@@ -15,7 +15,7 @@ spring:
 resilience4j.circuitbreaker:
   instances:
     accounts-circuit-breaker:
-      slidingWindowSize: 5
+      slidingWindowSize: 10
       failureRateThreshold: 50
       waitDurationInOpenState: 10s
       permitted-number-of-calls-in-half-open-state: 2
@@ -24,6 +24,16 @@ resilience4j.circuitbreaker:
       failureRateThreshold: 60
       waitDurationInOpenState: 15s
       permitted-number-of-calls-in-half-open-state: 2
+  circuit-breaker-aspect-order: 1
+
+resilience4j:
+  timelimiter:
+    time-limiter-aspect-order: 4
+  retry:
+    retry-aspect-order: 3
+  ratelimiter:
+    rate-limiter-aspect-order: 2
+
 
 management:
   endpoints:
@@ -47,3 +57,4 @@ management:
 logging:
   file:
     name: logs/gateway.log
+
